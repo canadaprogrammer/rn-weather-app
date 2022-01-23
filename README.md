@@ -4,7 +4,7 @@
 
 - `expo init weatherApp`
 
-  - `blank`
+  - Choose `blank`
 
 - `expo login`
 
@@ -31,6 +31,10 @@
   - `StyleSheet.create(obj: object): object` creates a StyleSheet style reference from the given object.
 
   - ```jsx
+    import { StatusBar } from 'expo-status-bar';
+    import React from 'react';
+    import { Text, View } from 'react-native';
+
     export default function App() {
       return (
         <View
@@ -41,7 +45,7 @@
             justifyContent: 'center',
           }}
         >
-          <Text style={{ fontSize: 28, color: 'blue' }}>
+          <Text style={{ fontSize: 28, color: 'blue', textAlign: 'center' }}>
             This is React Native Weather App!
           </Text>
           <StatusBar style='auto' />
@@ -51,9 +55,8 @@
     ```
 
   - ```jsx
-    import { StatusBar } from 'expo-status-bar';
-    import React from 'react';
-    import { StyleSheet, Text, View } from 'react-native';
+    ...
+    import { ..., StyleSheet } from 'react-native';
 
     export default function App() {
       return (
