@@ -86,3 +86,45 @@
     ```
 
 - `StatusBar` is component to control the app status bar.
+
+## Use Third Party Packages
+
+- React Native only provides core components to support and maintain quickly, but they're not enough.
+
+- Expo SDK provides a log of components and it's stable, `https://docs.expo.dev/versions/latest/`
+
+## Layout with Flexbox
+
+- Flexbox works the same way in React Native as it does in CSS on the web, with a few exceptions.
+
+- The defaults are different
+
+  - `flexDirection` defaulting to `column` instead of `row`,
+
+  - `alignContent` defaulting to `flex-start` instead of `stretch`,
+
+  - `flexShrink` defaulting to `0` instead of `1`
+
+  - the `flex parameter` only supporting `a single number`.
+
+- For layout, use `flex` instead of `width` and `height` because they are different depending on the screen of the phone.
+
+  - `flex` will define how your items are going to "fill" over the available space along your main axis. Space will be divided according to each element's flex property.
+
+  - ```
+    import React from 'react';
+    import { View } from 'react-native';
+
+    export default function App() {
+      return (
+        <View style={{ flex: 1, padding: 15 }}> // 1 / 1, there is no other sibling.
+          <View style={{ flex: 1, backgroundColor: 'tomato' }}></View> // 1 / (1
+          + 2 + 1)
+          <View style={{ flex: 2, backgroundColor: 'green' }}></View> // 2 / (1 +
+          2 + 1)
+          <View style={{ flex: 1, backgroundColor: 'gold' }}></View> // 1 / (1 +
+          2 + 1)
+        </View>
+      );
+    }
+    ```
