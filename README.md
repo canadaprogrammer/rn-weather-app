@@ -185,3 +185,93 @@
     },
   });
   ```
+
+## ScrollView and Dimensions
+
+### ScrollView
+
+- `horizontal`: When true, the scroll view's children are arranged horizontally in a row instead of vertically in a column.
+
+- `pagingEnabled`: When true, the scroll view stops on multiples of the scroll view's size when scrolling. This can be used for horizontal pagination.
+
+- `indicatorStyle`: The style of the scroll indicators. It's only work on `ios`.
+
+  - 'default' same as black.
+
+  - 'black', scroll indicator is black. This style is good against a light background.
+
+  - 'white', scroll indicator is white. This style is good against a dark background.
+
+- `showsHorizontalScrollIndicator`: When true, shows a horizontal scroll indicator.
+
+- `contentContainerStyle`: These styles will be applied to the scroll view content container which wraps all of the child views.
+
+  - ScrollView needs to use `contentContainerStyle` for the style.
+
+### Dimensions
+
+- `Dimensions`: It gets the dimensions.
+
+  - ```js
+    const window = Dimensions.get('window');
+    const screen = Dimensions.get('screen');
+
+    console.log(window.width);
+    ```
+
+- ```jsx
+  ...
+  import { ..., Dimensions, ScrollView } from 'react-native';
+
+  // const WINDOW_WIDTH = Dimensions.get('window').width;
+  const { width: WINDOW_WIDTH } = Dimensions.get('window');
+
+  export default function App() {
+    return (
+      <View style={styles.container}>
+        <StatusBar style='dark'></StatusBar>
+        <View style={styles.city}>
+          <Text style={styles.cityName}>Seoul</Text>
+        </View>
+        <ScrollView
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.weather}
+        >
+          <View style={styles.day}>
+            <Text style={styles.temp}>27</Text>
+            <Text style={styles.description}>Sunny</Text>
+          </View>
+          <View style={styles.day}>
+            <Text style={styles.temp}>27</Text>
+            <Text style={styles.description}>Sunny</Text>
+          </View>
+          <View style={styles.day}>
+            <Text style={styles.temp}>27</Text>
+            <Text style={styles.description}>Sunny</Text>
+          </View>
+          <View style={styles.day}>
+            <Text style={styles.temp}>27</Text>
+            <Text style={styles.description}>Sunny</Text>
+          </View>
+          <View style={styles.day}>
+            <Text style={styles.temp}>27</Text>
+            <Text style={styles.description}>Sunny</Text>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+
+  const styles = StyleSheet.create({
+    ...
+    // On ScrollView, `flex: 1` is not working correctly.
+    weather: {},
+    day: {
+      width: WINDOW_WIDTH,
+      alignItems: 'center',
+    },
+    ...
+  });
+  ```
