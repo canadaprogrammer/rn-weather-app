@@ -275,3 +275,53 @@
     ...
   });
   ```
+
+## Location
+
+- `expo install expo-location`
+
+- `expo-location` allows reading geo-location information from the device. Your app can poll for the current location or subscribe to location update events.
+
+### Get permission
+
+- ```jsx
+  import * as Location from 'expo-location';
+
+  export default function App() {
+    const [ok, setOk] = useState(true);
+    const ask = async () => {
+      const { granted } = await Location.requestForegroundPermissionsAsync();
+      if (!granted) {
+        setOk(false);
+      }
+    };
+    useEffect(() => {
+      ask();
+    }, []);
+  ```
+
+### Get Current Position
+
+- `Location.getCurrentPositionAsync(LocationOptions)`
+
+- Requests for one-time delivery of the user's current location. Depending on given `accuracy option` it may take some time to resolve, especially when you're inside a building.
+
+- ```jsx
+  const [city, setCity] = useState('Loading...');
+
+  const ask = async () => {
+    ...
+    const {
+      coords: { latitude, longitude },
+    } = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.High,
+    });
+    const location = await Location.reverseGeocodeAsync(
+      { latitude, longitude },
+      { useGoogleMaps: false }
+    );
+    setCity(location[0].city);
+  };
+
+  <Text style={styles.cityName}>{city}</Text>
+  ```
