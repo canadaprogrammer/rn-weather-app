@@ -409,7 +409,8 @@
     return (
       ...
           {days.length === 0 ? (
-            <View style={styles.day}>
+            // when you want to use stylesheet with other style, use spread operator(...)
+            <View style={{ ...styles.day, justifyContent: 'center' }}>
               <ActivityIndicator color='white' size='large' />
             </View>
           ) : (
@@ -433,4 +434,70 @@
       fontSize: 20,
     },
   });
+  ```
+
+## Icons
+
+- Weather Conditions, `https://openweathermap.org/weather-conditions`
+
+- `@expo/vector-icons` library is installed by default on the template project that get through `expo init` -- it is part of the expo package. It includes popular icon sets and you can browse all of the icons using `icons.expo.fyi`.
+
+  - ```jsx
+    import { Fontisto } from '@expo/vector-icons';
+
+    <Fontisto name='cloudy' size={32} color='white' />;
+    ```
+
+- Weather Conditions with Icon
+
+  - | Weather      | Icon         |
+    | ------------ | ------------ |
+    | Thunderstorm | lightning    |
+    | Atmosphere   | cloudy-gusts |
+    | Drizzle      | rain         |
+    | Rain         | rains        |
+    | Snow         | snow         |
+    | Clear        | day-sunny    |
+    | Clouds       | cloudy       |
+
+- ```jsx
+  import { Fontisto } from '@expo/vector-icons';
+  ...
+
+  const icons = {
+    Clouds: 'cloudy',
+    Rain: 'rains',
+    Snow: 'snow',
+    Clear: 'day-sunny',
+    Thunderstorm: 'lightning',
+    Drizzle: 'rain',
+    Atmosphere: 'cloudy-gusts',
+  };
+
+  export default function App() {
+    ...
+    return (
+      ...
+            days.map((day) => (
+              <View style={styles.day} key={day.dt}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={styles.temp}>
+                    {parseFloat(day.temp.day).toFixed(1)}
+                  </Text>
+                  <Fontisto
+                    name={icons[day.weather[0].main]}
+                    size={40}
+                    style={{ marginTop: 50 }}
+                  />
+                </View>
+                <Text style={styles.description}>{day.weather[0].main}</Text>
+                <Text style={styles.tinyText}>{day.weather[0].description}</Text>
+              </View>
+            ))
+          ...
   ```

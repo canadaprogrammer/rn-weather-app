@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import * as Location from 'expo-location';
+import { Fontisto } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -13,6 +14,16 @@ import {
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const API_KEY = '7d91988239d070118da74c34ea13ab33';
+
+const icons = {
+  Clouds: 'cloudy',
+  Rain: 'rains',
+  Snow: 'snow',
+  Clear: 'day-sunny',
+  Thunderstorm: 'lightning',
+  Drizzle: 'rain',
+  Atmosphere: 'cloudy-gusts',
+};
 
 export default function App() {
   const [city, setCity] = useState('Loading...');
@@ -56,15 +67,27 @@ export default function App() {
         contentContainerStyle={styles.weather}
       >
         {days.length === 0 ? (
-          <View style={styles.day}>
+          <View style={{ ...styles.day, justifyContent: 'center' }}>
             <ActivityIndicator color='white' size='large' />
           </View>
         ) : (
           days.map((day) => (
             <View style={styles.day} key={day.dt}>
-              <Text style={styles.temp}>
-                {parseFloat(day.temp.day).toFixed(1)}
-              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={styles.temp}>
+                  {parseFloat(day.temp.day).toFixed(1)}
+                </Text>
+                <Fontisto
+                  name={icons[day.weather[0].main]}
+                  size={40}
+                  style={{ marginTop: 50 }}
+                />
+              </View>
               <Text style={styles.description}>{day.weather[0].main}</Text>
               <Text style={styles.tinyText}>{day.weather[0].description}</Text>
             </View>
