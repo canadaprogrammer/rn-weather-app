@@ -302,9 +302,11 @@
 
 ### Get Current Position
 
-- `Location.getCurrentPositionAsync(LocationOptions)`
+- Get the Latitude and Longitude of current location, `Location.getCurrentPositionAsync(LocationOptions)`
 
-- Requests for one-time delivery of the user's current location. Depending on given `accuracy option` it may take some time to resolve, especially when you're inside a building.
+  - Requests for one-time delivery of the user's current location. Depending on given `accuracy option` it may take some time to resolve, especially when you're inside a building.
+
+- Get human address from the latitude and longitude, `Location.reverseGeocodeAsync({ latitude, longitude }, { useGoogleMaps: false })`
 
 - ```jsx
   const [city, setCity] = useState('Loading...');
@@ -324,4 +326,111 @@
   };
 
   <Text style={styles.cityName}>{city}</Text>
+  ```
+
+## Weather
+
+- Use Weather API - One Call API, "https://openweathermap.org/api/one-call-api"
+
+  - `https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}`
+
+    - example, `https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid={API key}`
+
+  - The One Call API provides the following weather data for any geographical coordinates:
+
+    - Current weather
+    - Minute forecast for 1 hour
+    - Hourly forecast for 48 hours
+    - Daily forecast for 7 days
+    - National weather alerts
+    - Historical weather data for the previous 5 days
+
+  - Parameters
+    <table>
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Required</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>lat, lon</td>
+          <td>required</td>
+          <td>Geographical coordinates (latitude, longitude)</td>
+        </tr>
+        <tr>
+          <td>appid</td>
+          <td>required</td>
+          <td>your unique API key (you can always find it on your account page under the "API key" tab)</td>
+        </tr>
+        <tr>
+          <td>exclude</td>
+          <td>optional</td>
+          <td>By using this parameter you can exclude some parts of the weather data from the API response. It should be a comma-delimited list (without spaces).<br>
+          Available values: `current`, `minutely`, `hourly`, `daily`, `alerts`</td>
+        </tr>
+        <tr>
+          <td>units</td>
+          <td>optional</td>
+          <td> Units of measurement. standard, metric and imperial units are available. If you do not use the units parameter, standard units will be applied by default.</td>
+        </tr>
+        <tr>
+          <td>lang</td>
+          <td>optional</td>
+          <td>You can use the lang parameter to get the output in your language.</td>
+        </tr>
+      </tbody>
+    </table>
+
+- Display loading, `<ActivityIndicator />`
+
+- ```jsx
+  ...
+  import { ..., ActivityIndicator } from 'react-native';
+  ...
+  const API_KEY = '7d91988239d070118da74c34ea13ab33';
+
+  export default function App() {
+    ...
+    const [days, setDays] = useState([]);
+    ...
+    const getWeather = async () => {
+      ...
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=alerts&appid=${API_KEY}&units=metric`
+      );
+      const json = await response.json();
+      setDays(json.daily);
+    };
+
+    ...
+    return (
+      ...
+          {days.length === 0 ? (
+            <View style={styles.day}>
+              <ActivityIndicator color='white' size='large' />
+            </View>
+          ) : (
+            days.map((day) => (
+              <View style={styles.day} key={day.dt}>
+                <Text style={styles.temp}>
+                  {parseFloat(day.temp.day).toFixed(1)}
+                </Text>
+                <Text style={styles.description}>{day.weather[0].main}</Text>
+                <Text style={styles.tinyText}>{day.weather[0].description}</Text>
+              </View>
+            ))
+          )}
+        ...
+    );
+  }
+
+  const styles = StyleSheet.create({
+    ...
+    tinyText: {
+      fontSize: 20,
+    },
+  });
   ```
